@@ -1,1 +1,28 @@
-tmgjgjjghjhgjg
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <button onclick="signInWithGithub()"> GO!!!!!!!!!!!!!!</button>
+    <script>
+        const supabaseUrl = 'https://awsmlxvdhqpjjfbewhcx.supabase.co';
+  const supabaseAnonKey = 'sb_publishable_tMLtR9joeZ6tJS2d7aWPPA_KmrO9XyA';
+
+  const { createClient } = window.supabase;
+
+  const supabase1 = createClient(supabaseUrl, supabaseAnonKey);
+
+
+  async function signInWithGithub() {
+  const { data, error } = await supabase1.auth.signInWithOAuth({
+    provider: 'github',
+  })
+}
+  </script>
+</body>
+</html>
