@@ -21,6 +21,7 @@
   async function signInWithGithub() {
   const { data, error } = await supabase1.auth.signInWithOAuth({
     provider: 'github',
+          redirectTo: `https://kdkirkina-max.github.io/index.html`,
   })
 }
   </script>
