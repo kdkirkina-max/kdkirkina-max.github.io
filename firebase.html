@@ -1,0 +1,81 @@
+<!-- Простые кнопки для интерфейса -->
+<button id="loginGoogle">Войти через Google</button>
+<button id="loginGithub">Войти через GitHub</button>
+<button id="signOutBtn" style="display:none;">Выйти</button>
+<p id="userStatus">Загрузка...</p>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-analytics.js";
+  
+  // Импортируем модули для работы с авторизацией
+  import { 
+    getAuth, 
+    signInWithPopup, 
+    signOut, 
+    GoogleAuthProvider, 
+    GithubAuthProvider,
+    onAuthStateChanged 
+  } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB067OnTYsV7s2SkVX_TF2c41PVdj3Vc30",
+    authDomain: "nov-3d050.firebaseapp.com",
+    projectId: "nov-3d050",
+    storageBucket: "nov-3d050.firebasestorage.app",
+    messagingSenderId: "984776671217",
+    appId: "1:984776671217:web:5f10d1be6cfbd871d40e50",
+    measurementId: "G-28BKK2CYG3"
+  };
+
+  // Инициализация Firebase и Auth
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+
+  // Получаем элементы интерфейса
+  const loginGoogleBtn = document.getElementById('loginGoogle');
+  const loginGithubBtn = document.getElementById('loginGithub');
+  const signOutBtn = document.getElementById('signOutBtn');
+  const userStatus = document.getElementById('userStatus');
+
+  // Вход через Google
+  loginGoogleBtn.addEventListener('click', () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => console.log("Успешный вход через Google:", result.user))
+      .catch((error) => console.error("Ошибка входа Google:", error));
+  });
+
+  // Вход через GitHub
+  loginGithubBtn.addEventListener('click', () => {
+    const provider = new GithubAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => console.log("Успешный вход через GitHub:", result.user))
+      .catch((error) => console.error("Ошибка входа GitHub:", error));
+  });
+
+  // Выход из аккаунта
+  signOutBtn.addEventListener('click', () => {
+    signOut(auth)
+      .then(() => console.log("Вы вышли из аккаунта"))
+      .catch((error) => console.error("Ошибка при выходе:", error));
+  });
+
+  // Слушатель состояния авторизации (меняет интерфейс в зависимости от статуса)
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userStatus.textContent = `Вы вошли как: ${user.displayName || user.email}`;
+      loginGoogleBtn.style.display = 'none';
+      loginGithubBtn.style.display = 'none';
+      signOutBtn.style.display = 'inline-block';
+    } else {
+      userStatus.textContent = "Вы не авторизованы";
+      loginGoogleBtn.style.display = 'inline-block';
+      loginGithubBtn.style.display = 'inline-block';
+      signOutBtn.style.display = 'none';
+    }
+  });
+</script>
+
+
